@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -34,21 +35,31 @@ export class UserService {
       }
     });
 
+    // 🔐 Hash password si fourni
+    if (dto.password) {
+      dto.password = await bcrypt.hash(dto.password, 10);
+    }
+
     // Création de l'utilisateur
     const user = this.userRepo.create(dto);
     return await this.userRepo.save(user);
   }
 
   // FIND ALL
-  findAll() {
+  findAll(): Promise<User[]> {
     return this.userRepo.find();
   }
 
   // FIND ONE
-  async findOne(id: string) {
+  async findOne(id: string): Promise<User> {
     const user = await this.userRepo.findOne({ where: { id } });
     if (!user) throw new NotFoundException('User not found');
     return user;
+  }
+
+  //FIND BY EMAIL
+  async findByEmail(email: string): Promise<User | null> {
+    return await this.userRepo.findOne({ where: { email } });
   }
 
   // UPDATE
