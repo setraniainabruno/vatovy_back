@@ -1,37 +1,51 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  Index,
+} from 'typeorm';
 
-@Entity()
+@Entity({ name: 'contes' })
 export class Conte {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Index()
+  @Column({ type: 'varchar', length: 150 })
   title: string;
 
-  @Column({ type: 'text' })
-  description: string;
-
-  @Column()
-  duration: string;
-
-  @Column()
-  durationSeconds: number;
-
-  @Column()
+  @Index()
+  @Column({ type: 'varchar', length: 100 })
   category: string;
 
-  @Column()
-  thumbnail: string;
+  @Index()
+  @Column({ type: 'boolean', default: true })
+  isActive: boolean;
 
-  @Column()
-  audioUrl: string;
-
-  @Column()
-  playCount: number;
-
+  @Index()
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @Column({ type: 'text' })
+  description: string;
+
+  @Column({ type: 'int', unsigned: true, default: 0 })
+  durationSeconds: number;
+
+  @Column({ type: 'varchar', length: 20, nullable: true })
+  duration?: string;
+
+  @Column({ type: 'text' })
+  thumbnail: string;
+
+  @Column({ type: 'text' })
+  audioUrl: string;
+
+  @Column({ type: 'int', unsigned: true, default: 0 })
+  playCount: number;
 }
