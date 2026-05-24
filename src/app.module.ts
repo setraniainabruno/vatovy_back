@@ -5,6 +5,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ContesModule } from './contes/contes.module';
 import { ImagekitModule } from './imgaekit/imagekit.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -23,12 +24,16 @@ import { ImagekitModule } from './imgaekit/imagekit.module';
         database: config.get<string>('DB_NAME'),
         autoLoadEntities: true,
         synchronize: true,
+        ssl: {
+          rejectUnauthorized: false,
+        },
       }),
     }),
     UserModule,
     AuthModule,
     ContesModule,
-    ImagekitModule
+    ImagekitModule,
+    CategoriesModule,
   ],
 })
 export class AppModule {}
