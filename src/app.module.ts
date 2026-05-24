@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { ContesModule } from './contes/contes.module';
 import { ImagekitModule } from './imgaekit/imagekit.module';
 import { CategoriesModule } from './categories/categories.module';
+import { ReactionModule } from './reaction/reaction.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { CategoriesModule } from './categories/categories.module';
     ContesModule,
     ImagekitModule,
     CategoriesModule,
+    ReactionModule,
   ],
 })
 export class AppModule {}

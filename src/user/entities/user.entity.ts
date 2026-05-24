@@ -1,3 +1,4 @@
+import { Reaction } from 'src/reaction/entities/reaction.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -5,6 +6,7 @@ import {
   Index,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity({ name: 'users' })
@@ -31,6 +33,13 @@ export class User {
 
   @Column('simple-array', { default: '' })
   favorites: string[];
+
+  // =========================
+  // RELATION CHILD
+  // =========================
+
+  @OneToMany(() => Reaction, (reaction) => reaction.user)
+  reactions: Reaction[];
 
   // =========================
   // TIMESTAMPS

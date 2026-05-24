@@ -1,4 +1,5 @@
 import { Category } from 'src/categories/entities/category.entity';
+import { Reaction } from 'src/reaction/entities/reaction.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -8,6 +9,7 @@ import {
   Index,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity({ name: 'contes' })
@@ -58,4 +60,11 @@ export class Conte {
 
   @Column({ type: 'int', unsigned: true, default: 0 })
   playCount: number;
+
+   // =========================
+  // RELATION CHILD
+  // =========================
+
+  @OneToMany(() => Reaction, (reaction) => reaction.conte)
+  reactions: Reaction[];
 }
