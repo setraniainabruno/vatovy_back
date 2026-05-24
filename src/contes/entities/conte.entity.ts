@@ -1,4 +1,5 @@
 import { Category } from 'src/categories/entities/category.entity';
+import { Comment } from 'src/comment/entities/comment.entity';
 import { Reaction } from 'src/reaction/entities/reaction.entity';
 import {
   Entity,
@@ -61,10 +62,13 @@ export class Conte {
   @Column({ type: 'int', unsigned: true, default: 0 })
   playCount: number;
 
-   // =========================
+  // =========================
   // RELATION CHILD
   // =========================
 
   @OneToMany(() => Reaction, (reaction) => reaction.conte)
   reactions: Reaction[];
+
+  @OneToMany(() => Comment, (comment) => comment.conte)
+  comments: Comment[];
 }
