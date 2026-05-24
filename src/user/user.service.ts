@@ -46,8 +46,21 @@ export class UserService {
   }
 
   // FIND ALL
-  findAll(): Promise<User[]> {
-    return this.userRepo.find();
+  async findAll(page = 1, limit = 10) {
+    const [data, total] = await this.userRepo.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+      order: { id: 'DESC' },
+    });
+
+    const formatted = data.map((user) => this.formatData(user));
+
+    return {
+      data: formatted,
+      total,
+      page,
+      totalPage: Math.ceil(total / limit),
+    };
   }
 
   // FIND ONE
@@ -73,5 +86,17 @@ export class UserService {
   async remove(id: string) {
     const user = await this.findOne(id);
     return this.userRepo.remove(user);
+  }
+
+  //Formattage de data
+  private formatData(user: User) {
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      avatar: user.avatar,
+      role: user.role,
+      favorites: user.favorites,
+    };
   }
 }
