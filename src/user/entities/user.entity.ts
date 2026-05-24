@@ -1,10 +1,18 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  Index,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-@Entity()
+@Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Index({ unique: true })
   @Column({ unique: true })
   email: string;
 
@@ -17,9 +25,20 @@ export class User {
   @Column({ default: null, nullable: true })
   avatar: string;
 
+  @Index()
   @Column({ default: 'user' })
   role: 'admin' | 'user';
 
   @Column('simple-array', { default: '' })
   favorites: string[];
+
+  // =========================
+  // TIMESTAMPS
+  // =========================
+
+  @CreateDateColumn({ type: 'timestamp' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamp' })
+  updatedAt: Date;
 }

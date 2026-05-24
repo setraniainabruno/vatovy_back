@@ -82,12 +82,13 @@ export class ContesService {
     page = 1,
     limit = 10,
   ): Promise<{
-    data: Conte[];
+    data: any[];
     total: number;
     page: number;
     totalPage: number;
   }> {
     const [data, total] = await this.conteRepository.findAndCount({
+      relations: ['category'],
       order: {
         createdAt: 'DESC',
       },
@@ -95,8 +96,10 @@ export class ContesService {
       take: limit,
     });
 
+    const formatted = data.map((conte) => this.formatConte(conte));
+
     return {
-      data,
+      data: formatted,
       total,
       page,
       totalPage: Math.ceil(total / limit),
@@ -106,8 +109,9 @@ export class ContesService {
   /**
    * FIND ONE
    */
-  async findOne(id: string): Promise<Conte> {
+  async findOne(id: string): Promise<any> {
     const conte = await this.conteRepository.findOne({
+      relations: ['category'],
       where: { id },
     });
 
@@ -115,7 +119,7 @@ export class ContesService {
       throw new NotFoundException('Conte introuvable');
     }
 
-    return conte;
+    return this.formatConte(conte);
   }
 
   /**
@@ -130,7 +134,7 @@ export class ContesService {
       ...dto,
       title: dto.title ?? conte.title,
       description: dto.description ?? conte.description,
-      category: dto.category ?? conte.category,
+      categoryID: dto.categoryId ?? conte.categoryId,
     });
 
     return this.conteRepository.save(conte);
@@ -156,4 +160,38 @@ export class ContesService {
 
     return this.conteRepository.save(conte);
   }
+
+  private formatConte(conte: Conte) {
+    return {
+      id: conte.id,
+      title: conte.title,
+      description: conte.description,
+
+      duration: conte.duration,
+      durationSeconds: conte.durationSeconds,
+
+      thumbnail: conte.thumbnail,
+      audioUrl: conte.audioUrl,
+
+      playCount: conte.playCount,
+      isActive: conte.isActive,
+
+      category: conte.category?.name ?? null,
+
+      createdAt: this.toMadagascarTime(conte.createdAt),
+      updatedAt: this.toMadagascarTime(conte.updatedAt),
+    };
+  }
+
+  private toMadagascarTime = (date: Date) => {
+    return new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Indian/Antananarivo',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    }).format(date);
+  };
 }

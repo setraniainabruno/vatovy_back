@@ -1,3 +1,4 @@
+import { Category } from 'src/categories/entities/category.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -5,6 +6,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Index,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity({ name: 'contes' })
@@ -16,9 +19,16 @@ export class Conte {
   @Column({ type: 'varchar', length: 150 })
   title: string;
 
+  @ManyToOne(() => Category, (category) => category.contes, {
+    eager: true, // auto load category
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({ name: 'categoryId' })
+  category: Category;
+
   @Index()
-  @Column({ type: 'varchar', length: 100 })
-  category: string;
+  @Column({ nullable: true })
+  categoryId: string;
 
   @Index()
   @Column({ type: 'boolean', default: true })

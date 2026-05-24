@@ -26,9 +26,9 @@ export class CreateConteDto {
   @Min(0)
   durationSeconds: number;
 
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  category: string;
+  categoryId: string;
 
   @IsUrl()
   thumbnail: string;

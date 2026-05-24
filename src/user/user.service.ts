@@ -78,6 +78,10 @@ export class UserService {
   // UPDATE
   async update(id: string, dto: UpdateUserDto) {
     const user = await this.findOne(id);
+    if (dto.password) {
+      dto.password = await bcrypt.hash(dto.password, 10);
+    }
+
     Object.assign(user, dto);
     return this.userRepo.save(user);
   }
