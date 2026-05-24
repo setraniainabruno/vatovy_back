@@ -7,6 +7,7 @@ import { ContesModule } from './contes/contes.module';
 import { ImagekitModule } from './imgaekit/imagekit.module';
 import { CategoriesModule } from './categories/categories.module';
 import { ReactionModule } from './reaction/reaction.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { ReactionModule } from './reaction/reaction.module';
     ImagekitModule,
     CategoriesModule,
     ReactionModule,
+    CommentModule,
   ],
 })
 export class AppModule {}
