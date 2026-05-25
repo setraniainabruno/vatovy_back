@@ -178,8 +178,8 @@ export class ContesService {
 
       category: conte.category?.name ?? null,
 
-      createdAt: this.toMadagascarTime(conte.createdAt),
-      updatedAt: this.toMadagascarTime(conte.updatedAt),
+      createdAt: conte.createdAt,
+      updatedAt: conte.updatedAt,
     };
   }
 
